@@ -68,11 +68,11 @@ router.post('/tables',  async (req, res) =>  {
             let values = [];
             const user = await client.query(queryTemplates, values);
             let queryTemplateFields = "create table templatefields ( id serial PRIMARY KEY, name varchar(100) NOT NULL, type varchar(30) NOT NULL, object varchar(30) NOT NULL, orderpresentation int NOT NULL, showcover boolean NOT NULL, searchable boolean NOT NULL, isobjecttitle boolean NOT NULL, templateid int NOT NULL )";
-            const user = await client.query(queryTemplateFields, values);
+            const user2 = await client.query(queryTemplateFields, values);
             let queryRegistries = "create table registries ( id serial PRIMARY KEY, ip varchar(30) NOT NULL, description varchar(500) UNIQUE NOT NULL, date timestamp NOT NULL )";
-            const user = await client.query(queryRegistries, values);
+            const user3 = await client.query(queryRegistries, values);
             let queryUsers = "create table users ( id serial PRIMARY KEY, name varchar(50) NOT NULL, username varchar(50) UNIQUE NOT NULL, password varchar(150) NOT NULL, active boolean NOT NULL )";
-            const user = await client.query(queryUsers, values);
+            const user4 = await client.query(queryUsers, values);
             res.status(200).send({message: 'Exito'});
         })
     } catch (err) {
