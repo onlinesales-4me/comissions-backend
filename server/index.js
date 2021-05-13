@@ -32,6 +32,10 @@ app.use(express.static('server/uploads/images'));
 
 require('./routes')(app);
 
+app.get('/', (req, res) => {
+    res.send({message: hola})
+});
+
 app.post('/upload-photo', upload.single('pic'), (req, res) => {
     if(req.file) {
         res.json(req.file);
