@@ -40,24 +40,6 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
     }
 });
 
-/* CREATE REGISTRY  */
-router.post('/create',  async (req, res) =>  {
-    try {
-        const hashPassword = await bcrypt.hash('password111!', saltRounds);
-
-        pool.connect( async (err, client, done) => {
-            if (err) throw err
-            let query = "insert into Users (name, username, password, active) values ($1, $2, $3, $4)";
-            let values = ['admin', 'admin', hashPassword, true];
-            const user = await client.query(query, values);
-            res.status(200).send({message: 'Exito'});
-        })
-    } catch (err) {
-        res.status(500);
-        res.send(err.message);
-    }
-});
-
 router.post('/login', async (req, res) =>  {
     try {
         pool.connect( async (err, client, done) => {
