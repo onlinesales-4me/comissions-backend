@@ -6,8 +6,8 @@
   "scripts": {
     "devStart": "nodemon ./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "web": "node server"
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED='0' node server",
+    "web": "NODE_TLS_REJECT_UNAUTHORIZED='0' node server"
   },
   "author": "",
   "license": "ISC",
