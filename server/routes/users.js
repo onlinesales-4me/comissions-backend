@@ -43,6 +43,21 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
     }
 });
 
+router.post('/clear-table',  async (req, res) =>  {
+    try {
+        pool.connect( async (err, client, done) => {
+            if (err) throw err
+            let queryTemplates = "truncate templates restart identity";
+            let values = [];
+            const user = await client.query(queryTemplates, values);
+            res.status(200).send({message: 'Exito'});
+        })
+    } catch (err) {
+        res.status(500);
+        res.send(err.message);
+    }
+});
+
 router.post('/login', async (req, res) =>  {
     try {
         pool.connect( async (err, client, done) => {
