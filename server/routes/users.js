@@ -30,8 +30,9 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
     try {
         pool.connect( async (err, client, done) => {
             if (err) throw err
+            const hashPassword = await bcrypt.hash(req.body.password, saltRounds);
             let query = "insert into Users (name, username, password, active) values ($1, $2, $3, $4)";
-            let values = [req.body.name, req.body.username, req.body.password, true];
+            let values = [req.body.name, req.body.username, hashPassword, true];
             const user = await client.query(query, values);
             res.status(200).send({message: 'Exito'});
         })
