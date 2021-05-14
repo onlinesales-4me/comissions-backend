@@ -44,21 +44,16 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
 });
 
 router.post('/login', async (req, res) =>  {
-    console.log("Afuera try");
     try {
-        console.log("Adentro try");
         pool.connect( async (err, client, done) => {
-            console.log("Afuera pool");
             if (err) throw err
             let query = "select * from Users where username = $1";
             let values = [req.body.username];
             const user = await client.query(query, values);
-            console.log("user", user);
             if(user.rows === 0) {
                 res.status(404).send({message: 'Usuario no encontrado.'});
             } else {
                 const comparePasswords = async (userQuery) => {
-                    console.log();
                     const match = await bcrypt.compare(req.body.password, userQuery.password);
                     if(match) {
                         const user = {username: userQuery.username, name: userQuery.name}
