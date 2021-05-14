@@ -19,6 +19,7 @@ router.get('/', auth.verifyAuthentication, async (req, res) =>  {
             res.status(200).send({ users: users.rows});
         })
     } catch (err) {
+        console.log("err", err);
         res.status(500);
         res.send(err.message);
     }
@@ -35,22 +36,28 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
             res.status(200).send({message: 'Exito'});
         })
     } catch (err) {
+        console.log("err", err);
         res.status(500);
         res.send(err.message);
     }
 });
 
 router.post('/login', async (req, res) =>  {
+    console.log("Afuera try");
     try {
+        console.log("Adentro try");
         pool.connect( async (err, client, done) => {
+            console.log("Afuera pool");
             if (err) throw err
             let query = "select * from Users where username = $1";
             let values = [req.body.username];
             const user = await client.query(query, values);
+            console.log("user", user);
             if(user.rows === 0) {
                 res.status(404).send({message: 'Usuario no encontrado.'});
             } else {
                 const comparePasswords = async (userQuery) => {
+                    console.log();
                     const match = await bcrypt.compare(req.body.password, userQuery.password);
                     if(match) {
                         const user = {username: userQuery.username, name: userQuery.name}
@@ -64,6 +71,7 @@ router.post('/login', async (req, res) =>  {
             }
         })
     } catch (err) {
+        console.log("err", err);
         res.status(500);
         res.send(err.message);
     }
@@ -79,6 +87,7 @@ router.put('/deactivate', auth.verifyAuthentication, async (req, res) =>  {
             res.status(200).send({message: 'Usuario modificado con exito.'});
         })
     } catch (err) {
+        console.log("err", err);
         res.status(500);
         res.send(err.message);
     }
