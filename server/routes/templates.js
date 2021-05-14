@@ -131,15 +131,17 @@ router.post('/', auth.verifyAuthentication, async (req, res) =>  {
             let values = [];
             const template = await client.query(query, values);
             for (let i = 0; i < req.body.fields.length; i++) {
-                createTemplateField(req.body.fields[i], template.rows[0].id);
+                createTemplateField(req.body.fields[i], template.rows[0].id, i, req.body.fields.length);
             }
-            client.release(true);
-            res.status(200).send({ message: 'Exito'});
         };
-        const createTemplateField = async (templateField, templateid) => {
+        const createTemplateField = async (templateField, templateid, currentIndex, lastIndex) => {
             let query ="insert into templatefields (name, type, object, orderPresentation, showCover, searchable, isObjectTitle, templateid) values ($1, $2, $3, $4, $5, $6, $7, $8)";
             let values = [templateField.name, templateField.type, templateField.object, templateField.orderPresentation, templateField.showCover, templateField.searchable, templateField.isObjectTitle, templateid];
             const template = await client.query(query, values);
+            if(currentIndex === lastIndex-1) {
+                client.release(true);
+                res.status(200).send({ message: 'Exito'});
+            }
         };
         checkTemplateExistsOnDatabase();
     } catch (err) {
@@ -219,15 +221,17 @@ router.put('/', auth.verifyAuthentication, async (req, res) =>  {
             let values = [];
             const template = await client.query(query, values);
             for (let i = 0; i < req.body.fields.length; i++) {
-                createTemplateField(req.body.fields[i], template.rows[0].id);
+                createTemplateField(req.body.fields[i], template.rows[0].id, i, req.body.fields.length);
             }
-            client.release(true);
-            res.status(200).send({ message: 'Exito'});
         };
-        const createTemplateField = async (templateField, templateid) => {
+        const createTemplateField = async (templateField, templateid, currentIndex, lastIndex) => {
             let query ="insert into templatefields (name, type, object, orderPresentation, showCover, searchable, isObjectTitle, templateid) values ($1, $2, $3, $4, $5, $6, $7, $8)";
             let values = [templateField.name, templateField.type, templateField.object, templateField.orderPresentation, templateField.showCover, templateField.searchable, templateField.isObjectTitle, templateid];
             const template = await client.query(query, values);
+            if(currentIndex === lastIndex-1) {
+                client.release(true);
+                res.status(200).send({ message: 'Exito'});
+            }
         };
 
         checkTemplateExistsOnDatabase();
