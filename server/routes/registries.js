@@ -8,11 +8,11 @@ let auth = require('../middleware/authValidator');
 router.get('/', auth.verifyAuthentication, async (req, res) =>  {
     const client = await pool.connect();
     try {
-        let query = "select * from Templates where  UPPER(name) = UPPER($1) and validityEnd = $2";
-        let values = [req.query.name, '1964-05-28'];
+        let query = "select * from Registries";
+        let values = [];
         const registries = await client.query(query, values);
         client.release(true);
-        res.status(200).send({registries: registries});
+        res.status(200).send({registries: registries.rows});
     } catch (err) {
         client.release(true);
         res.status(500);

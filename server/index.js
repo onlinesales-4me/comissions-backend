@@ -37,8 +37,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload-photo', upload.single('pic'), (req, res) => {
-    console.log('1')
-    console.log('req', req)
     if(req.file) {
         res.json(req.file);
     }
